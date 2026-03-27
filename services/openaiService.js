@@ -11,6 +11,9 @@ const fs = require('fs').promises;
 const path = require('path');
 const { model } = require('./ollamaService');
 const RestrictionPromptService = require('./restrictionPromptService');
+const { observeOpenAI } = require("@langfuse/openai");
+const {NodeSDK} = require("@langfuse/node");
+const {LangfuseSpanProcessor} = require("@langfuse/otel");
 
 class OpenAIService {
   constructor() {
@@ -18,11 +21,20 @@ class OpenAIService {
   }
 
   initialize() {
+
+    if(config.langfuse.useLangfuse === 'yes') {
+      console.log('[DEBUG] Initializing Langfuse integration');
+      const sdk = new NodeSDK({
+        spanProcessors: [new LangfuseSpanProcessor()],
+      });
+      sdk.start();
+    }
+
     if (!this.client && config.aiProvider === 'ollama') {
-      this.client = new OpenAI({
+      this.client = observeOpenAI(new OpenAI({
         baseURL: config.ollama.apiUrl + '/v1',
         apiKey: 'ollama'
-      });
+      }));
     } else if (!this.client && config.aiProvider === 'custom') {
       this.client = new OpenAI({
         baseURL: config.custom.apiUrl,
@@ -30,9 +42,9 @@ class OpenAIService {
       });
     } else if (!this.client && config.aiProvider === 'openai') {
       if (!this.client && config.openai.apiKey) {
-        this.client = new OpenAI({
+        this.client = observeOpenAI(new OpenAI({
           apiKey: config.openai.apiKey
-        });
+        }));
       }
     }
   }
@@ -177,6 +189,8 @@ class OpenAIService {
 
       const response = await this.client.chat.completions.create({
         model: model,
+        stream: true,
+        stream_options: { include_usage: true },
         messages: [
           {
             role: "system",

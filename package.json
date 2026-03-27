@@ -29,6 +29,12 @@
   "author": "Clusterzx",
   "license": "MIT",
   "dependencies": {
+    "@langfuse/client": "^5.0.1",
+    "@langfuse/langchain": "^5.0.1",
+    "@langfuse/openai": "^5.0.1",
+    "@langfuse/otel": "^5.0.1",
+    "@langfuse/tracing": "^5.0.1",
+    "@opentelemetry/sdk-node": "^0.214.0",
     "axios": "^1.8.2",
     "bcryptjs": "^3.0.2",
     "better-sqlite3": "^11.8.1",
@@ -46,7 +52,7 @@
     "nodemon": "^3.1.9",
     "openai": "^4.86.2",
     "rimraf": "^6.0.1",
-    "sqlite3": "^5.1.7",
+    "sqlite3": "^6.0.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "tiktoken": "^1.0.20"

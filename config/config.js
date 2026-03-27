@@ -32,6 +32,13 @@ console.log('Loaded restriction settings:', {
   RESTRICT_TO_EXISTING_DOCUMENT_TYPES: aiRestrictions.restrictToExistingDocumentTypes
 });
 
+const langfuseConfig = {
+  secretKey: process.env.LANGFUSE_SECRET_KEY || '',
+  publicKey: process.env.LANGFUSE_PUBLIC_KEY || '',
+  baseUrl: process.env.LANGFUSE_BASE_URL || 'https://cloud.langfuse.com',
+  useLangfuse: parseEnvBoolean(process.env.USE_LANGFUSE, 'no')
+};
+
 // Initialize external API configuration
 const externalApiConfig = {
   enabled: parseEnvBoolean(process.env.EXTERNAL_API_ENABLED, 'no'),
@@ -64,6 +71,8 @@ module.exports = {
   restrictToExistingTags: aiRestrictions.restrictToExistingTags,
   restrictToExistingCorrespondents: aiRestrictions.restrictToExistingCorrespondents,
   restrictToExistingDocumentTypes: aiRestrictions.restrictToExistingDocumentTypes,
+  // Langfuse config
+  langfuse: langfuseConfig,
   // External API config
   externalApiConfig: externalApiConfig,
   paperless: {
