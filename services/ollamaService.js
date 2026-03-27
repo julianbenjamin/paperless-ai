@@ -545,6 +545,8 @@ class OllamaService {
             prompt: prompt,
             system: systemPrompt,
             stream: false,
+            stream_options: { include_usage: true },
+            think: false,
             format: schema,
             options: {
                 temperature: 0.7,
@@ -696,6 +698,8 @@ class OllamaService {
                 prompt: prompt,
                 system: systemPrompt,
                 stream: false,
+                stream_options: { include_usage: true },
+                think: false,
                 options: {
                     temperature: 0.7,
                     top_p: 0.9,
